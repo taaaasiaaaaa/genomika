@@ -1,0 +1,34 @@
+#gene_data_file_path = "C:/Users/Dell/Desktop/gestosc/new_dens.txt"
+
+def read_gene_data(file_path):
+    data = []
+    with open(file_path) as file:
+        for line in file:
+            parts = line.strip().split()
+            if len(parts) >= 3:
+                data.append([parts[0], int(parts[1]), int(parts[2])])
+            else:
+                print(f"Nieprawidłowy format linii: {line}")
+    return data
+
+def find_window(position, window_size):
+    window_start = (position // window_size) * window_size
+    window_end = window_start + window_size
+    return window_start, window_end
+
+# Ścieżka do pliku z danymi o genach
+gene_data_file_path = "C:/Users/Dell/Desktop/gestosc/new_dens.txt"
+gene_data = read_gene_data(gene_data_file_path)
+
+# Parametry analizy
+window_size = 10000
+
+# Zapisz wyniki do pliku
+output_file_path = "C:/Users/Dell/Desktop/gestosc/out.txt"
+with open(output_file_path, 'w') as output_file:
+    for entry in gene_data:
+        chrom, gene_start, gene_end = entry
+        window_start, window_end = find_window(gene_start, window_size)
+        output_file.write(f"{chrom} {gene_start} {gene_end} {window_start} {window_end}\n")
+
+print(f"Wyniki zapisano do pliku: {output_file_path}")
